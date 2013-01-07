@@ -942,6 +942,14 @@ altbininstall: $(BUILDPYTHON)
 	fi
 
 bininstall: altbininstall
+	@for i in $(LIBPC); \
+	do \
+		if test ! -d $(DESTDIR)$$i; then \
+			echo "Creating directory $$i"; \
+			$(INSTALL) -d -m $(DIRMODE) $(DESTDIR)$$i; \
+		else	true; \
+		fi; \
+	done
 	-if test -f $(DESTDIR)$(BINDIR)/python3$(EXE) -o -h $(DESTDIR)$(BINDIR)/python3$(EXE); \
 	then rm -f $(DESTDIR)$(BINDIR)/python3$(EXE); \
 	else true; \
