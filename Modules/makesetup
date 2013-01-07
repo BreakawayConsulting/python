@@ -176,6 +176,7 @@ sed -e 's/[ 	]*#.*//' -e '/^[ 	]*$/d' |
 			*.c++)		srcs="$srcs $arg";;
 			*.cxx)		srcs="$srcs $arg";;
 			*.cpp)		srcs="$srcs $arg";;
+			*.S)		srcs="$srcs $arg";;
 			\$*)		libs="$libs $arg"
 					cpps="$cpps $arg";;
 			*.*)		echo 1>&2 "bad word $arg in $line"
@@ -205,6 +206,7 @@ sed -e 's/[ 	]*#.*//' -e '/^[ 	]*$/d' |
 			*.C)   obj=`basename $src .C`.o; cc='$(CXX)';;
 			*.cxx) obj=`basename $src .cxx`.o; cc='$(CXX)';;
 			*.cpp) obj=`basename $src .cpp`.o; cc='$(CXX)';;
+			*.S) obj=`basename $src .S`.o; cc='$(CC)';; # Assembler
 			*.m)   obj=`basename $src .m`.o; cc='$(CC)';; # Obj-C
 			*)     continue;;
 			esac
@@ -270,7 +272,7 @@ sed -e 's/[ 	]*#.*//' -e '/^[ 	]*$/d' |
 	*)  sed -e "
 		1i$NL/* Generated automatically from $config by makesetup. */
 		/MARKER 1/i$NL$EXTDECLS
- 
+
 		/MARKER 2/i$NL$INITBITS
 
 		" $config >config.c
