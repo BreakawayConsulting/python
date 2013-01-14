@@ -454,11 +454,15 @@ def setcopyright():
         builtins.credits = _Printer("credits", """\
     Thanks to CWI, CNRI, BeOpen.com, Zope Corporation and a cast of thousands
     for supporting Python development.  See www.python.org for more information.""")
-    here = os.path.dirname(os.__file__)
+    if hasattr(os, '__file__'):
+        here = os.path.dirname(os.__file__)
+        dirs = [os.path.join(here, os.pardir), here, os.curdir]
+    else:
+        here = None
+        dirs = [os.curdir]
     builtins.license = _Printer(
         "license", "See http://www.python.org/%.3s/license.html" % sys.version,
-        ["LICENSE.txt", "LICENSE"],
-        [os.path.join(here, os.pardir), here, os.curdir])
+        ["LICENSE.txt", "LICENSE"], dirs)
 
 
 class _Helper(object):
