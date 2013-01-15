@@ -262,7 +262,8 @@ _PyRandom_Init(void)
       using PYTHONHASHSEED if provided.
     */
 
-    env = Py_GETENV("PYTHONHASHSEED");
+    /* Intentionally ignore the -E flag for this env var. */
+    env = getenv("PYTHONHASHSEED");
     if (env && *env != '\0' && strcmp(env, "random") != 0) {
         char *endptr = env;
         unsigned long seed;
