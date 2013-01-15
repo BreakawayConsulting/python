@@ -2946,7 +2946,7 @@ $as_echo "$interp" >&6; }
 elif test "$cross_compiling" = maybe; then
     as_fn_error $? "Cross compiling required --host=HOST-TUPLE and --build=ARCH" "$LINENO" 5
 else
-    PYTHON_FOR_BUILD='./$(BUILDPYTHON) -E'
+    PYTHON_FOR_BUILD='PYTHONHASHSEED=0 ./$(BUILDPYTHON) -E'
 fi
 
 
