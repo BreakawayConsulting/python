@@ -1037,7 +1037,7 @@ LIBSUBDIRS=	tkinter tkinter/test tkinter/test/test_tkinter \
 		venv venv/scripts venv/scripts/posix \
 		curses pydoc_data $(MACHDEPS)
 libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
-	@for i in $(SCRIPTDIR) $(LIBDEST); \
+	@for i in $(SCRIPTDIR) $(LIBDEST) $(DESTSHARED); \
 	do \
 		if test ! -d $(DESTDIR)$$i; then \
 			echo "Creating directory $$i"; \
@@ -1056,7 +1056,7 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
 		else	true; \
 		fi; \
 	done
-	@for i in $(srcdir)/Lib/*.py `cat pybuilddir.txt`/_sysconfigdata.py; \
+	@for i in $(srcdir)/Lib/*.py; \
 	do \
 		if test -x $$i; then \
 			$(INSTALL_SCRIPT) $$i $(DESTDIR)$(LIBDEST); \
@@ -1064,6 +1064,16 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
 		else \
 			$(INSTALL_DATA) $$i $(DESTDIR)$(LIBDEST); \
 			echo $(INSTALL_DATA) $$i $(LIBDEST); \
+		fi; \
+	done
+	@for i in `cat pybuilddir.txt`/_sysconfigdata.py; \
+	do \
+		if test -x $$i; then \
+			$(INSTALL_SCRIPT) $$i $(DESTDIR)$(DESTSHARED); \
+			echo $(INSTALL_SCRIPT) $$i $(DESTSHARED); \
+		else \
+			$(INSTALL_DATA) $$i $(DESTDIR)$(DESTSHARED); \
+			echo $(INSTALL_DATA) $$i $(DESTSHARED); \
 		fi; \
 	done
 	@for d in $(LIBSUBDIRS); \
@@ -1154,7 +1164,7 @@ inclinstall:
 
 # Install the library and miscellaneous stuff needed for extending/embedding
 # This goes into $(exec_prefix)
-LIBPL=		$(LIBDEST)/config-$(LDVERSION)
+LIBPL=		$(BINLIBDEST)/config-$(LDVERSION)
 
 # pkgconfig directory
 LIBPC=		$(LIBDIR)/pkgconfig
