@@ -951,7 +951,7 @@ win32_get_reparse_tag(HANDLE reparse_point_handle, ULONG *reparse_tag)
 #endif /* MS_WINDOWS */
 
 /* Return a dictionary corresponding to the POSIX environment table */
-#ifdef WITH_NEXT_FRAMEWORK
+#ifdef __APPLE__
 /* On Darwin/MacOSX a shared library or framework has no access to
 ** environ directly, we must obtain it with _NSGetEnviron().
 */
@@ -959,6 +959,7 @@ win32_get_reparse_tag(HANDLE reparse_point_handle, ULONG *reparse_tag)
 static char **environ;
 #elif !defined(_MSC_VER) && ( !defined(__WATCOMC__) || defined(__QNX__) )
 extern char **environ;
+#else
 #endif /* !_MSC_VER */
 
 static PyObject *
@@ -978,7 +979,7 @@ convertenviron(void)
     d = PyDict_New();
     if (d == NULL)
         return NULL;
-#ifdef WITH_NEXT_FRAMEWORK
+#ifdef __APPLE__
     if (environ == NULL)
         environ = *_NSGetEnviron();
 #endif
